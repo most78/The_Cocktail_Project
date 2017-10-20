@@ -8,16 +8,20 @@ const extractSass = new ExtractTextPlugin({
 });
 
 module.exports = {
+  devServer: {
+    contentBase: './dist'
+  },
   entry: ['./src/index.js', './src/scss/main.scss',],
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist')
   },
   module: {
+    
     rules: [
       {
         test: /\.(sass|scss)$/,
-        loader: ExtractTextPlugin.extract(['css-loader', 'sass-loader'])
+        loader: ExtractTextPlugin.extract(['css-loader', 'sass-loader']),
       },
       {
         test: /\.pug$/,
