@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
+const webpack = require('webpack');
 const extractSass = new ExtractTextPlugin({
   filename: "[name].[contenthash].css",
   disable: process.env.NODE_ENV === "development"
@@ -11,7 +12,7 @@ module.exports = {
   devServer: {
     contentBase: './dist'
   },
-  entry: ['./src/index.js', './src/scss/main.scss',],
+  entry: './src/index.js',
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist')
@@ -21,25 +22,38 @@ module.exports = {
     rules: [
       {
         test: /\.(sass|scss)$/,
-        loader: ExtractTextPlugin.extract(['css-loader', 'sass-loader']),
-      },
-      {
-        test: /\.pug$/,
-        loaders: ['html-loader', 'pug-html-loader'],
-      },
-    ]
-  },
-  plugins: [
-    new CleanWebpackPlugin(['dist']),
-    new ExtractTextPlugin({
-      filename: 'style.css',
-      allChunks: true,
-    }),
-    new HtmlWebpackPlugin({
-      title: 'The_Cocktail_Project',
-      minify:{collapseWhitespace: false},
-      hash: true,
-      template: './src/pug/main.pug',
-    }),
-  ],
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: ['css-loader', 'sass-loader']
+        }
+      )
+    },
+    {
+      test: /\.html$/,
+      use: 'html-loader',
+    },
+  ]
+},
+plugins: [
+  new CleanWebpackPlugin(['dist']),
+  new ExtractTextPlugin({
+    filename: 'style.css',
+    allChunks: true,
+  }),
+  new HtmlWebpackPlugin({
+    title: 'The_Cocktail_Project',
+    minify:{collapseWhitespace: false},
+    hash: true,
+    template: './src/index.html',
+  }),
+  new webpack.ProvidePlugin({
+    $: 'jquery',
+    jQuery: 'jquery',
+    'window.jQuery': 'jquery',
+    Popper: ['popper.js', 'default'],
+    // In case you imported plugins individually, you must also require them here:
+    Util: "exports-loader?Util!bootstrap/js/dist/util",
+    Dropdown: "exports-loader?Dropdown!bootstrap/js/dist/dropdown",
+  }),
+],
 };
