@@ -1,6 +1,8 @@
 const path = require('path');
+const glob = require('glob');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const PurifyCSSPlugin = require('purifycss-webpack');
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const webpack = require('webpack');
 const extractSass = new ExtractTextPlugin({
@@ -15,11 +17,17 @@ module.exports = {
   entry: './src/index.js',
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist')
+    path: path.resolve(__dirname, 'dist'),
   },
   module: {
     
     rules: [
+      {
+        test: /\.(png|svg|jpg|gif)$/,
+        use: [
+          'url-loader'
+        ],
+      },
       {
         test: /\.(sass|scss)$/,
         use: ExtractTextPlugin.extract({
@@ -35,7 +43,7 @@ module.exports = {
   ]
 },
 plugins: [
-  new CleanWebpackPlugin(['dist']),
+  new CleanWebpackPlugin(['./dist']),
   new ExtractTextPlugin({
     filename: 'style.css',
     allChunks: true,
@@ -55,5 +63,8 @@ plugins: [
     Util: "exports-loader?Util!bootstrap/js/dist/util",
     Dropdown: "exports-loader?Dropdown!bootstrap/js/dist/dropdown",
   }),
+  new PurifyCSSPlugin({
+    paths: glob.sync(path.join(__dirname, 'src/*.html')),
+  })
 ],
 };
