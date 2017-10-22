@@ -1,3 +1,4 @@
+const bootstrap = require('bootstrap');
 import './scss/main.scss';
-import 'bootstrap';
+import 'bootstrap/dist/js/bootstrap';
 
