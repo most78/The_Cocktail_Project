@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const PurifyCSSPlugin = require('purifycss-webpack');
 const CleanWebpackPlugin = require("clean-webpack-plugin");
+const json = require('./src/model.json');
 const webpack = require('webpack');
 const extractSass = new ExtractTextPlugin({
   filename: "[name].[contenthash].css",
@@ -22,6 +23,10 @@ module.exports = {
   module: {
     
     rules: [
+      {
+        test: /\.json$/,
+        use: 'json-loader'
+      },
       {
         test: /\.(png|svg|jpg|gif)$/,
         use: [

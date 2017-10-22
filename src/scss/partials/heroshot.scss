@@ -1,3 +1,15 @@
 .heroShot-background{
+  background-blend-mode: multiply;
+  background-color: #17a2b8;
   background-image: url('./../background.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  .help-items{
+    flex-basis: 13%;
+    padding: .95rem 0;
+  }
+  .catchTitle{
+    color: white;
+    text-transform: uppercase;
+  }
 }

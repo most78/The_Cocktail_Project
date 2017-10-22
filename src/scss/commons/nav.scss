@@ -1,0 +1,30 @@
+[role="button"] {
+  border: none;
+  touch-action: manipulation;
+  color: white;
+}
+.dropdown-menu{
+  background-color: initial; 
+  border: none;
+  &.show {
+    display: flex;
+    width: 100%;
+  }
+}
+.nav{
+  text-transform: uppercase;
+  font-size: 0.9em;
+  align-items: center;
+  .nav-item{
+    .nav-link {
+      border: none;
+    }
+    &.show{
+      .nav-link{
+        color: white;
+        background-color: initial;
+        border: none;
+      }
+    }
+  }
+}
